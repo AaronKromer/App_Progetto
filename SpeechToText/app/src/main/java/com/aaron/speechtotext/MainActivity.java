@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResults(Bundle bundle) {
 
-                ArrayList<String> data = bundle.getStringArrayList(speechRecognizer.RESULTS_RECOGNITION);
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
                 editText.setText(data.get(0));
             }

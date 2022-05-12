@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "217321240996",
+    "project_id": "traduzionevoce",
+    "storage_bucket": "traduzionevoce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217321240996:android:25ab1a19b4fbc5ce05a931",
+        "android_client_info": {
+          "package_name": "com.aaron.traduzionevoce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "217321240996-vm7str3ahd2n5vssmebbddi0ve7404k6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvNyr562VXMJAmazVEINrJq5VIRIpeiVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217321240996-vm7str3ahd2n5vssmebbddi0ve7404k6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
