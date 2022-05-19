@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="stringOptions">
+        <item>Italian</item>
+        <item>English</item>
+        <item>German</item>
+        <item>Greek</item>
+        <item>Spanish</item>
+        <item>Albanian</item>
+        <item>French</item>
+        <item>Russian</item>
+        <item>Ukranian</item>
+
+    </string-array>
+
+
+
+</resources>
