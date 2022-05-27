@@ -4,36 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#B058FF"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/sourceLang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textSize="20sp"
-        android:text="Detecting"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/sourceLang"/>
+        android:layout_margin="20dp"
+        android:text="Detecting"
+        android:textSize="20sp" />
+
     <TextView
-        android:hint="Tap to speak"
+        android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edittext"
+        android:hint="Tap to speak"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
 
+    <Button
+        android:id="@+id/Copy"
+        android:layout_width="64dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="20dp"
+        android:text="Copy"
+
+        android:textSize="10dp"></Button>
+
     <ImageButton
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_mic_off_24"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_baseline_mic_off_24">
 
     </ImageButton>
+
+
 
     <Button
         android:id="@+id/translate"
@@ -44,21 +57,28 @@
         android:text="Translate"></Button>
 
     <Spinner
+        android:id="@+id/Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:entries="@array/stringOptions"></Spinner>
 
 
-
     <TextView
+        android:id="@+id/TranslatedText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/TranslatedText"
-        android:textSize="16sp"
         android:layout_margin="20sp"
-        android:text=""></TextView>
+        android:text=""
+        android:textSize="16sp"></TextView>
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Delete"></Button>
 
 
 </LinearLayout>

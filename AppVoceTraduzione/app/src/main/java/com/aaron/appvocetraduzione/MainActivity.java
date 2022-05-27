@@ -6,16 +6,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.renderscript.ScriptGroup;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +36,7 @@ import com.google.firebase.ml.naturallanguage.translate.FirebaseTranslatorOption
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private ImageButton imageButton;
     private TextView Trascrizione;
@@ -37,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private int count=0;
     private TextView mSourceLang;
     private TextView mTranslatedText;
+    private Spinner mSpinner;
+    private Button mDelete;
+    private Button mCopy;
 
     private String sourceText;
 
@@ -51,6 +61,45 @@ public class MainActivity extends AppCompatActivity {
         imageButton=findViewById(R.id.button);
         Trascrizione=findViewById(R.id.edittext);
         mTranslatedText=findViewById(R.id.TranslatedText);
+        mSpinner=findViewById(R.id.Spinner);
+        mDelete=findViewById(R.id.delete);
+        mCopy=findViewById(R.id.Copy);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Language, android.R.layout.simple_spinner_item );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
+
+        mCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Value = Trascrizione.getText().toString();
+                if(Value.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Empty", Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+
+                    ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipData=ClipData.newPlainText("Data",Value);
+                    clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(MainActivity.this, "Copied", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Value = Trascrizione.getText().toString();
+                if(Value.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Already Empty", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Trascrizione.setText("");
+                }
+
+            }
+        });
 
         mTranslateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,16 +277,48 @@ public class MainActivity extends AppCompatActivity {
         }
         translateText(langCode);
     }
-
+    String lingua="";
 
     private void translateText(int langCode) {
         mTranslatedText.setText("Translating");
-        FirebaseTranslatorOptions options = new FirebaseTranslatorOptions.Builder()
-                //From language
-                .setSourceLanguage(langCode)
-                //to language
-                .setTargetLanguage(FirebaseTranslateLanguage.EN)
-                .build();
+        FirebaseTranslatorOptions options= null;
+        switch (lingua){
+            case "Italian":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.IT).build();
+                break;
+            case "English":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.EN).build();
+                break;
+            case "German":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.DE).build();
+                break;
+            case "Greek":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.EL).build();
+                break;
+            case "Spanish":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.ES).build();
+                break;
+            case "Albanian":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.SQ).build();
+                break;
+            case "French":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.FR).build();
+                break;
+            case "Russian":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.RU).build();
+                break;
+            case "Ukranian":
+                options = new FirebaseTranslatorOptions.Builder().setSourceLanguage(langCode).setTargetLanguage(FirebaseTranslateLanguage.UK).build();
+                break;
+            case "":
+                Toast.makeText(this, "non funzina lingua", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(this, "-- not selected", Toast.LENGTH_SHORT).show();
+
+        }
+
+
 
         final FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance()
                 .getTranslator(options);
@@ -256,5 +337,15 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+         lingua = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
