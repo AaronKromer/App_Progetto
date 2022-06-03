@@ -38,6 +38,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    //Variabili
+
     private ImageButton imageButton;
     private TextView Trascrizione;
     private Button mTranslateBtn;
@@ -47,14 +49,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Spinner mSpinner;
     private Button mDelete;
     private Button mCopy;
-
+    private Button mCopy2;
     private String sourceText;
 
     SpeechRecognizer speechRecognizer;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Associamo i Widget alle istanze delle classi
 
         mTranslateBtn=findViewById(R.id.translate);
         mSourceLang=findViewById(R.id.sourceLang);
@@ -64,15 +70,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mSpinner=findViewById(R.id.Spinner);
         mDelete=findViewById(R.id.delete);
         mCopy=findViewById(R.id.Copy);
+        mCopy2=findViewById(R.id.Copy2);
+
+        //Impostiamo lo spinner
+
         ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(this,R.array.Language, android.R.layout.simple_spinner_item );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(adapter);
         mSpinner.setOnItemSelectedListener(this);
 
-        mCopy.setOnClickListener(new View.OnClickListener() {
+        //Impostiamo speechRecognizer
+        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
+
+        // Settiamo un Intent associato all'azione ACTION_RECOGNIZE_SPEECH
+        Intent speechRecognizerIntent= new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+
+        //Funzionalità del bottone Copy relativo al testo tradotto
+
+        mCopy2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Value = Trascrizione.getText().toString();
+                String Value = mTranslatedText.getText().toString();
                 if(Value.isEmpty()){
                     Toast.makeText(MainActivity.this, "Empty", Toast.LENGTH_SHORT).show();
 
@@ -87,6 +106,31 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
+        //Funzionalità del bottone Copy relativo al testo da tradurre
+
+        mCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Value = Trascrizione.getText().toString();
+                if(Value.isEmpty()){
+
+                    Toast.makeText(MainActivity.this, "Empty", Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+
+                    ClipboardManager clipboardManager=(ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clipData=ClipData.newPlainText("Data",Value);
+                    clipboardManager.setPrimaryClip(clipData);
+                    Toast.makeText(MainActivity.this, "Copied", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+        //Funzionalità del bottone delete
+
         mDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,28 +140,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 else {
                     Trascrizione.setText("");
+                    mTranslatedText.setText("");
                 }
-
             }
         });
+
+        //Funzionalità del bottone Translate
 
         mTranslateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View V) {
+                //chiama il metodo identifyLanguage
                 identifyLanguage();
             }
         });
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},1);
 
-        }
 
-        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
-
-        Intent speechRecognizerIntent= new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-
+        //Funzionalità del bottone imageButton, modifica l'immagine una volta avviato l'ascolto
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     imageButton.setImageDrawable(getDrawable(R.drawable.ic_baseline_mic_24));
 
                     //startlistening
-
                     speechRecognizer.startListening(speechRecognizerIntent);
                     count=1;
                 }
@@ -172,18 +211,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onError(int i) {
-
+                //inviamo un messaggio di errore
+                Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResults(Bundle bundle) {
-
+                //Passiamo il risultato dall'ascolto a data e lo inseriamo dentro Trascrizione
                 ArrayList<String> data =bundle.getStringArrayList(speechRecognizer.RESULTS_RECOGNITION);
-
                 Trascrizione.setText(data.get(0));
-            }
+        }
 
-            @Override
+           @Override
             public void onPartialResults(Bundle bundle) {
 
             }
@@ -193,8 +232,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
+
+
+        //Controllo permessi di registrazione
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},1);
+
+        }
+
     }
 
+
+    //Richiesta permessi di registrazione
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -213,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+    //data la trascrizione identifica la lingua utilizzando Firebase
     private void identifyLanguage() {
         sourceText=Trascrizione.getText().toString();
         FirebaseLanguageIdentification identifier= FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
@@ -224,12 +276,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Toast.makeText(getApplicationContext(),"Language not identified", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    //chiama il metodo getLanguageCode passandogli il codice della lingua identificata
                     getLanguageCode(s);
                 }
             }
         });
     }
 
+
+    //Assegna a mSourceLang la lingua identificata e chiama il metodo translateText passandogli il codice della lingua
     private void getLanguageCode(String language) {
 
         int langCode;
@@ -279,6 +334,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
     String lingua="";
 
+
+    //data la lingua identificata traduce utilizzando Firebase
+
     private void translateText(int langCode) {
         mTranslatedText.setText("Translating");
         FirebaseTranslatorOptions options= null;
@@ -319,17 +377,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
 
+        //se necessario installa il pacchetto della lingua
 
-        final FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance()
-                .getTranslator(options);
+        final FirebaseTranslator translator = FirebaseNaturalLanguage.getInstance().getTranslator(options);
 
-        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-                .build();
+        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
 
         translator.downloadModelIfNeeded(conditions).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 translator.translate(sourceText).addOnSuccessListener(new OnSuccessListener<String>() {
+                    //Assegnamo a mTranslatedText il risultato della traduzione
                     @Override
                     public void onSuccess(String s) {
                         mTranslatedText.setText(s);
@@ -337,6 +395,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 });
             }
         });
+
     }
 
     @Override

@@ -14,15 +14,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="20dp"
-        android:text="Detecting"
+        android:layout_marginTop="50dp"
+        android:text="@string/Detecting"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tap to speak"
+        android:layout_margin="10dp"
+        android:hint="@string/HintTv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -32,8 +33,10 @@
         android:id="@+id/Copy"
         android:layout_width="64dp"
         android:layout_height="33dp"
+        android:layout_gravity="right"
         android:layout_marginTop="20dp"
-        android:text="Copy"
+        android:layout_marginHorizontal="10dp"
+        android:text="@string/Copy"
 
         android:textSize="10dp"></Button>
 
@@ -54,9 +57,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_marginTop="20dp"
-        android:text="Translate"></Button>
+        android:text="@string/Translate"></Button>
 
     <Spinner
+        android:layout_marginTop="40dp"
         android:id="@+id/Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,13 +76,25 @@
         android:layout_margin="20sp"
         android:text=""
         android:textSize="16sp"></TextView>
+
+    <Button
+        android:id="@+id/Copy2"
+        android:layout_width="64dp"
+        android:layout_height="33dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="@string/Copy"
+
+        android:textSize="10dp"></Button>
+
     <Button
         android:id="@+id/delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_marginTop="20dp"
-        android:text="Delete"></Button>
+        android:text="@string/Delete"></Button>
 
 
 </LinearLayout>

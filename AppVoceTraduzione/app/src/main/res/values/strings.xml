@@ -1,8 +1,17 @@
 <resources>
-    <string name="app_name">AppVoceTraduzione</string>
+    <string name="app_name">GATranslate</string>
+
+
+    <string name="Detecting">Detecting</string>
+    <string name="HintTv">Tap to speak</string>
+    <string name="Copy">Copy</string>
+    <string name="Translate">Translate</string>
+    <string name="Delete">Delete</string>
+
 
 
     <string-array name="Language">
+        <item>Select</item>
         <item>Italian</item>
         <item>English</item>
         <item>German</item>
