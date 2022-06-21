@@ -40,17 +40,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //Variabili
 
-    private ImageButton imageButton;
-    private TextView Trascrizione;
-    private Button mTranslateBtn;
+    private ImageButton imageButton = null;
+    private TextView Trascrizione = null;
+    private Button mTranslateBtn = null;
+    private TextView mSourceLang = null;
+    private TextView mTranslatedText = null;
+    private Spinner mSpinner = null;
+    private Button mDelete = null;
+    private Button mCopy = null;
+    private Button mCopy2= null;
+    private String sourceText = null;
     private int count=0;
-    private TextView mSourceLang;
-    private TextView mTranslatedText;
-    private Spinner mSpinner;
-    private Button mDelete;
-    private Button mCopy;
-    private Button mCopy2;
-    private String sourceText;
 
     SpeechRecognizer speechRecognizer;
 

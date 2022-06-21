@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">GATranslate</string>
+    <string name="app_name">GATranslation</string>
 
 
     <string name="Detecting">Detecting</string>
-    <string name="HintTv">Tap to speak</string>
+    <string name="HintTv">Tap the icon to speak</string>
     <string name="Copy">Copy</string>
     <string name="Translate">Translate</string>
     <string name="Delete">Delete</string>
