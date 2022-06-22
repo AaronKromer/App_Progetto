@@ -16,6 +16,7 @@ import android.renderscript.ScriptGroup;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -108,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         //Funzionalità del bottone Copy relativo al testo da tradurre
-
         mCopy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -183,6 +183,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
+         final String TAG="RecognitionListener";
+
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle bundle) {
@@ -212,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onError(int i) {
                 //inviamo un messaggio di errore
-                Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                Log.i(TAG,"Error");
             }
 
             @Override
@@ -268,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void identifyLanguage() {
         sourceText=Trascrizione.getText().toString();
         FirebaseLanguageIdentification identifier= FirebaseNaturalLanguage.getInstance().getLanguageIdentification();
-        mSourceLang.setText("detecting");
+        mSourceLang.setText("Detecting");
         identifier.identifyLanguage(sourceText).addOnSuccessListener(new OnSuccessListener<String>() {
             @Override
             public void onSuccess(String s) {
